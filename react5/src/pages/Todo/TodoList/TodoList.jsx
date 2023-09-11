@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from "react";
-
+import React, {useState, useEffect, useMemo} from "react";
+import List from '@mui/material/List';
 import {
     getTodo,
     changeTodoItem,
     deleteTodoItem,
 } from "../../../services/todoService";
-
 import TodoListItem from "../../../components/TodoListItem/TodoListItem";
-
 import {
-    FILTER_TODO_ALL,
     FILTER_TODO_COMPLETED,
     FILTER_TODO_PROGRESS,
-} from "./../../../constants/todoConstants";
+} from "../../../constants/todoConstants";
 
-export default function TodoList({ newTodo, filter }) {
+export default function TodoList({newTodo, filter, color, liftingList, themeMode}) {
     const [list, setList] = useState([]);
     const [filteredList, setFilteredList] = useState([]);
+
+    const sortedList = useMemo(() => {
+        return filteredList.sort((a, b) => b.rating - a.rating);
+    }, [filteredList]);
 
     useEffect(() => {
         (async () => {
@@ -25,24 +26,22 @@ export default function TodoList({ newTodo, filter }) {
     }, []);
 
     useEffect(() => {
-        console.log(`in useEffect for setFilteredList`);
         setFilteredList(list);
-    }, [list])
+        liftingList(list);
+    }, [list]);
 
     useEffect(() => {
-        console.log(`in useEffect for newTodo`);
         Object.keys(newTodo).length &&
         setList((prevState) => [...prevState, newTodo]);
     }, [newTodo]);
 
     useEffect(() => {
-        console.log(`in useEffect for filter: ${filter} and list:`, list)
-        switch(filter){
+        switch (filter) {
             case FILTER_TODO_COMPLETED:
-                setFilteredList(list.filter(item => item.completed));
+                setFilteredList(list.filter((item) => item.completed));
                 break;
             case FILTER_TODO_PROGRESS:
-                setFilteredList(list.filter(item => !item.completed));
+                setFilteredList(list.filter((item) => !item.completed));
                 break;
             default:
                 setFilteredList(list);
@@ -78,15 +77,25 @@ export default function TodoList({ newTodo, filter }) {
     };
 
     return list.length ? (
-        <ul>
-            {filteredList.map((item, index) => (
-                <TodoListItem
-                    key={index}
-                    item={item}
-                    handleItemCompleted={handleItemCompleted}
-                    handleItemDelete={handleItemDelete}
-                />
-            ))}
-        </ul>
+        <List style={{color}}>
+            <table className={themeMode === "light" ? "light" : "dark"}>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {sortedList.map((item, index) => (
+                    <TodoListItem
+                        key={index}
+                        item={item}
+                        handleItemCompleted={handleItemCompleted}
+                        handleItemDelete={handleItemDelete}
+                    />
+                ))}
+                </tbody>
+            </table>
+        </List>
     ) : null;
 }
