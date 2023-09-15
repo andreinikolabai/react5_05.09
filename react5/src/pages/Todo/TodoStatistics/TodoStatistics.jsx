@@ -13,6 +13,4 @@ export default memo(function TodoStatistics({ list = [] }) {
         </div>
     );
 }, (prevProps, nextProps) => {
-    // console.log(`prevProps`, prevProps);
-    // console.log(`nextProps`, nextProps);
 });

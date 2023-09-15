@@ -5,7 +5,7 @@ const FILTER_TODO_ALL = `all`;
 const FILTER_TODO_COMPLETED = `completed`;
 const FILTER_TODO_PROGRESS = `progress`;
 
-const TODO_COLOR = `#000`;
+const TODO_COLOR_HEAD = `#000`;
 
 const THEME_TODO_LIGHT = `light`;
 const THEME_TODO_DARK = `dark`
@@ -16,7 +16,7 @@ export {
     FILTER_TODO_ALL,
     FILTER_TODO_COMPLETED,
     FILTER_TODO_PROGRESS,
-    TODO_COLOR,
+    TODO_COLOR_HEAD,
     THEME_TODO_LIGHT,
     THEME_TODO_DARK
 };

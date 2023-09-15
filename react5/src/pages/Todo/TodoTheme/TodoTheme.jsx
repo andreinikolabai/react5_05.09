@@ -8,6 +8,7 @@ export default function TodoTheme({ themeMode, setThemeMode }) {
     const handleFilter = (e) => {
         const selectedTheme = e.target.value;
         setThemeMode(selectedTheme);
+        console.log(`Theme changed to ${selectedTheme}`);
     };
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./style.sass";
 
 import {
@@ -12,7 +12,11 @@ import useLocalStorage from '../../../hooks/useLocalStorage'
 export default function TodoFilter({ liftingFilter }) {
     const [filter, setFilter] = useLocalStorage(`filter`, FILTER_TODO_ALL);
 
-    const handleFilter = (e) => setFilter(e.target.value);
+    const handleFilter = (e) => {
+        const selectedFilter = e.target.value;
+        setFilter(selectedFilter);
+        console.log(`Filter changed to ${selectedFilter}`);
+    };
 
     useEffect(() => {
         liftingFilter(filter);

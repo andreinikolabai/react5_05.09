@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useMemo} from "react";
-import List from '@mui/material/List';
+import React, { useState, useEffect, useMemo } from "react";
+import List from "@mui/material/List";
 import {
     getTodo,
     changeTodoItem,
@@ -11,7 +11,7 @@ import {
     FILTER_TODO_PROGRESS,
 } from "../../../constants/todoConstants";
 
-export default function TodoList({newTodo, filter, color, liftingList, themeMode}) {
+export default function TodoList({ newTodo, filter, color, liftingList, themeMode }) {
     const [list, setList] = useState([]);
     const [filteredList, setFilteredList] = useState([]);
 
@@ -31,8 +31,13 @@ export default function TodoList({newTodo, filter, color, liftingList, themeMode
     }, [list]);
 
     useEffect(() => {
-        Object.keys(newTodo).length &&
-        setList((prevState) => [...prevState, newTodo]);
+        if (Object.keys(newTodo).length) {
+            setList((prevState) => {
+                const updatedList = [...prevState, newTodo];
+                console.log("New todo added:", newTodo);
+                return updatedList;
+            });
+        }
     }, [newTodo]);
 
     useEffect(() => {
@@ -54,12 +59,14 @@ export default function TodoList({newTodo, filter, color, liftingList, themeMode
                 completed: !item.completed,
             });
 
-            setList((prevState) =>
-                prevState.map((element) => {
+            setList((prevState) => {
+                const updatedList = prevState.map((element) => {
                     if (element.id === item.id) element = changedItem;
                     return element;
-                })
-            );
+                });
+                console.log(`Item ${item.title} completed status changed`);
+                return updatedList;
+            });
         })();
     };
 
@@ -69,7 +76,11 @@ export default function TodoList({newTodo, filter, color, liftingList, themeMode
         (async () => {
             try {
                 await deleteTodoItem(id);
-                setList((prevState) => prevState.filter((item) => item.id !== id));
+                setList((prevState) => {
+                    const updatedList = prevState.filter((item) => item.id !== id);
+                    console.log(`Item with ID ${id} deleted`);
+                    return updatedList;
+                });
             } catch (err) {
                 console.log(err);
             }
@@ -77,7 +88,7 @@ export default function TodoList({newTodo, filter, color, liftingList, themeMode
     };
 
     return list.length ? (
-        <List style={{color}}>
+        <List style={{ color }}>
             <table className={themeMode === "light" ? "light" : "dark"}>
                 <thead>
                 <tr>

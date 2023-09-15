@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import "./style.sass";
 
-import { TODO_COLOR } from "./../../../constants/todoConstants";
+import { TODO_COLOR_HEAD } from "../../../constants/todoConstants";
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
 export default function TodoColorPicker({ liftingColor }) {
-    const [color, setColor] = useLocalStorage(`color`, TODO_COLOR);
+    const [color, setColor] = useLocalStorage(`color`, TODO_COLOR_HEAD);
 
     const handleChange = (e) => setColor(e.target.value);
 
